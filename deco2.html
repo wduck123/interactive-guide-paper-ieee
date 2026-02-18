@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decodificador Docente - IEEE Guide</title>
+    <style>
+        /* ============================================
+           VARIABLES Y CONFIGURACIÓN BASE
+           ============================================ */
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1f2937;
+            --bg-hover: #374151;
+            --border-color: #374151;
+            --border-light: #4b5563;
+            
+            --accent-blue: #3b82f6;
+            --accent-blue-light: #60a5fa;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --text-dark: #6b7280;
+            
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-card: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+            
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* ============================================
+           ANIMACIONES
+           ============================================ */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        /* ============================================
+           CONTENEDOR PRINCIPAL
+           ============================================ */
+        .container {
+            width: 100%;
+            max-width: 700px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-blue);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow-glow);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           TARJETA DE DECODIFICACIÓN
+           ============================================ */
+        .decode-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-blue);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.125rem;
+        }
+
+        /* ============================================
+           FORMULARIOS
+           ============================================ */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all var(--transition-fast);
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-textarea::placeholder {
+            color: var(--text-dark);
+        }
+
+        /* ============================================
+           BOTONES
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-primary {
+            background: var(--gradient-blue);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+            border-color: var(--border-light);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* ============================================
+           RESULTADOS
+           ============================================ */
+        .result-section {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .result-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .result-status.valid {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .result-status.invalid {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        /* ============================================
+           INFO CARDS
+           ============================================ */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            transition: all var(--transition-fast);
+        }
+
+        .info-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .info-value.score {
+            color: var(--accent-blue-light);
+        }
+
+        .info-value.name {
+            font-size: 1rem;
+        }
+
+        .info-value.date {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           SECCIONES DETAIL
+           ============================================ */
+        .sections-detail {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .sections-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-item:last-child {
+            border-bottom: none;
+        }
+
+        .section-name {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .section-score {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .section-score.completed {
+            color: var(--accent-green);
+        }
+
+        .section-score.pending {
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           PROGRESS BAR
+           ============================================ */
+        .progress-container {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .progress-text {
+            color: var(--text-muted);
+        }
+
+        .progress-value {
+            color: var(--accent-blue-light);
+            font-weight: 600;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: var(--bg-hover);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-blue);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        /* ============================================
+           RAW DATA
+           ============================================ */
+        .raw-data {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .raw-data-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .raw-data-title:hover {
+            color: var(--text-secondary);
+        }
+
+        .raw-data-content {
+            display: none;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .raw-data-content.show {
+            display: block;
+        }
+
+        /* ============================================
+           ERROR MESSAGE
+           ============================================ */
+        .error-message {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--accent-red);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 1rem;
+            color: var(--accent-red);
+            font-size: 0.9rem;
+            animation: shake 0.5s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* ============================================
+           INSTRUCCIONES
+           ============================================ */
+        .instructions {
+            background: var(--gradient-card);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .instructions-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .instructions-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .instructions-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .instructions-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .instructions-list li::before {
+            content: '→';
+            color: var(--accent-blue-light);
+            font-weight: bold;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .decode-card {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">🔓</div>
+            <h1 class="title">Decodificador Docente</h1>
+            <p class="subtitle">Verifica el progreso de tus estudiantes</p>
+        </div>
+
+        <!-- Instrucciones -->
+        <div class="instructions">
+            <div class="instructions-title">
+                <span>📋</span>
+                <span>Instrucciones de uso</span>
+            </div>
+            <ul class="instructions-list">
+                <li>Solicita a tu estudiante el código de entrega generado al finalizar el curso</li>
+                <li>Pega el código en el campo de texto a continuación</li>
+                <li>Haz clic en "Verificar y Decodificar" para ver los resultados</li>
+                <li>El sistema mostrará el nombre, calificación y progreso detallado del estudiante</li>
+            </ul>
+        </div>
+
+        <!-- Tarjeta de decodificación -->
+        <div class="decode-card">
+            <div class="card-title">
+                <div class="card-icon">🔑</div>
+                <span>Verificar Código de Entrega</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Código Base64 del Estudiante</label>
+                <textarea 
+                    id="codeInput" 
+                    class="form-textarea" 
+                    placeholder="Pega aquí el código que te compartió el estudiante..."></textarea>
+            </div>
+
+            <button id="decodeBtn" class="btn btn-primary btn-full">
+                <span>🔍</span>
+                <span>Verificar y Decodificar</span>
+            </button>
+
+            <div id="errorMessage" class="error-message">
+                <strong>Error:</strong> El código ingresado no es válido. Verifica que hayas copiado todo el código correctamente.
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        <div id="resultSection" class="decode-card result-section">
+            <div class="result-header">
+                <div class="result-title">
+                    <span>✅</span>
+                    <span>Resultado Verificado</span>
+                </div>
+                <div id="validationStatus" class="result-status valid">
+                    <span>✓</span>
+                    <span>Válido</span>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-label">Estudiante</div>
+                    <div id="studentName" class="info-value name">--</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Calificación Final</div>
+                    <div id="finalScore" class="info-value score">--</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Secciones Completadas</div>
+                    <div id="sectionsCompleted" class="info-value">--</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Fecha de Entrega</div>
+                    <div id="submissionDate" class="info-value date">--</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span class="progress-text">Progreso del Curso</span>
+                    <span id="progressValue" class="progress-value">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progressBar" class="progress-bar-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="sectionsDetail" class="sections-detail">
+                <div class="sections-title">
+                    <span>📊</span>
+                    <span>Desglose por Secciones</span>
+                </div>
+                <!-- Secciones generadas dinámicamente -->
+            </div>
+
+            <div class="raw-data">
+                <div class="raw-data-title" onclick="toggleRawData()">
+                    <span>🔧</span>
+                    <span>Ver datos crudos (JSON)</span>
+                    <span id="toggleIcon">▼</span>
+                </div>
+                <pre id="rawDataContent" class="raw-data-content"></pre>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Herramienta de verificación para docentes - IEEE Guide</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Los códigos son generados localmente y codificados en Base64 para verificación de integridad</p>
+        </div>
+    </div>
+
+    <script>
+        // Lista de secciones para mostrar en el desglose
+        const SECTION_NAMES = [
+            '1. Definición del Tema',
+            '2. Revisión de Literatura',
+            '3. El Título',
+            '4. Resumen (Abstract)',
+            '5. Introducción',
+            '6. Metodología',
+            '7. Resultados',
+            '8. Discusión',
+            '9. Conclusiones',
+            '10. Citas y Referencias',
+            '11. Gráficas, Tablas y Ecuaciones'
+        ];
+
+        // Función para decodificar Base64
+        function decodeBase64(base64String) {
+            try {
+                // Decodificar Base64 a UTF-8
+                const decoded = decodeURIComponent(escape(atob(base64String)));
+                return JSON.parse(decoded);
+            } catch (error) {
+                console.error('Error al decodificar:', error);
+                return null;
+            }
+        }
+
+        // Función para formatear fecha
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Función para renderizar secciones
+        function renderSections(details) {
+            const container = document.getElementById('sectionsDetail');
+            let html = `
+                <div class="sections-title">
+                    <span>📊</span>
+                    <span>Desglose por Secciones</span>
+                </div>
+            `;
+
+            details.forEach((score, index) => {
+                const sectionName = SECTION_NAMES[index] || `Sección ${index + 1}`;
+                const isCompleted = score === 100;
+                const statusClass = isCompleted ? 'completed' : 'pending';
+                const statusIcon = isCompleted ? '✓' : '○';
+                const statusText = isCompleted ? 'Completado' : 'Pendiente';
+
+                html += `
+                    <div class="section-item">
+                        <span class="section-name">${sectionName}</span>
+                        <span class="section-score ${statusClass}">
+                            <span>${statusIcon}</span>
+                            <span>${statusText}</span>
+                        </span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Función para mostrar/ocultar datos crudos
+        function toggleRawData() {
+            const content = document.getElementById('rawDataContent');
+            const icon = document.getElementById('toggleIcon');
+            
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                icon.textContent = '▼';
+            } else {
+                content.classList.add('show');
+                icon.textContent = '▲';
+            }
+        }
+
+        // Función principal de decodificación
+        function decodeAndVerify() {
+            const codeInput = document.getElementById('codeInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const resultSection = document.getElementById('resultSection');
+            const code = codeInput.value.trim();
+
+            // Resetear estados
+            errorMessage.classList.remove('show');
+            resultSection.classList.remove('show');
+
+            if (!code) {
+                errorMessage.textContent = 'Por favor ingresa un código para verificar.';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Intentar decodificar
+            const data = decodeBase64(code);
+
+            if (!data) {
+                errorMessage.innerHTML = '<strong>Error:</strong> El código ingresado no es válido. Verifica que hayas copiado todo el código correctamente.';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Verificar que tenga los campos necesarios
+            if (!data.student || typeof data.score === 'undefined' || !data.date || !Array.isArray(data.details)) {
+                errorMessage.innerHTML = '<strong>Error:</strong> El código no contiene la información esperada. Puede estar corrupto o ser de otra fuente.';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Mostrar resultados
+            document.getElementById('studentName').textContent = data.student;
+            document.getElementById('finalScore').textContent = `${data.score}%`;
+            document.getElementById('sectionsCompleted').textContent = `${data.sections || data.details.filter(s => s === 100).length}/${data.totalSections || data.details.length}`;
+            document.getElementById('submissionDate').textContent = formatDate(data.date);
+
+            // Actualizar barra de progreso
+            const progress = data.score || 0;
+            document.getElementById('progressValue').textContent = `${progress}%`;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+
+            // Renderizar secciones
+            renderSections(data.details);
+
+            // Mostrar datos crudos
+            document.getElementById('rawDataContent').textContent = JSON.stringify(data, null, 2);
+
+            // Cambiar estado de validación según el puntaje
+            const statusEl = document.getElementById('validationStatus');
+            if (data.score >= 80) {
+                statusEl.className = 'result-status valid';
+                statusEl.innerHTML = '<span>✓</span><span>Válido - Excelente</span>';
+            } else if (data.score >= 60) {
+                statusEl.className = 'result-status valid';
+                statusEl.style.borderColor = 'var(--accent-yellow)';
+                statusEl.style.color = 'var(--accent-yellow)';
+                statusEl.style.background = 'rgba(245, 158, 11, 0.1)';
+                statusEl.innerHTML = '<span>⚠</span><span>Válido - Aprobado</span>';
+            } else {
+                statusEl.className = 'result-status invalid';
+                statusEl.innerHTML = '<span>✕</span><span>Requiere revisión</span>';
+            }
+
+            // Mostrar sección de resultados
+            resultSection.classList.add('show');
+
+            // Hacer scroll a los resultados
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Event Listeners
+        document.getElementById('decodeBtn').addEventListener('click', decodeAndVerify);
+
+        // Permitir decodificar con Enter
+        document.getElementById('codeInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                decodeAndVerify();
+            }
+        });
+
+        // Limpiar error al escribir
+        document.getElementById('codeInput').addEventListener('input', function() {
+            document.getElementById('errorMessage').classList.remove('show');
+        });
+
+        // Hacer toggleRawData disponible globalmente
+        window.toggleRawData = toggleRawData;
+    </script>
+</body>
+</html>
