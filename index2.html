@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva - Redacción Científica IEEE</title>
+    <style>
+        /* ============================================
+           VARIABLES Y CONFIGURACIÓN BASE
+           ============================================ */
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1f2937;
+            --bg-hover: #374151;
+            --border-color: #374151;
+            --border-light: #4b5563;
+            
+            --accent-blue: #3b82f6;
+            --accent-blue-light: #60a5fa;
+            --accent-blue-dark: #2563eb;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --text-dark: #6b7280;
+            
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           ANIMACIONES
+           ============================================ */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px var(--accent-blue), 0 0 10px var(--accent-blue); }
+            50% { box-shadow: 0 0 20px var(--accent-blue), 0 0 30px var(--accent-blue); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* ============================================
+           LAYOUT PRINCIPAL
+           ============================================ */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           SIDEBAR NAVEGACIÓN
+           ============================================ */
+        .sidebar {
+            width: 300px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: transform var(--transition-normal);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-blue);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .progress-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .progress-percentage {
+            color: var(--accent-blue-light);
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background: var(--bg-hover);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-blue);
+            border-radius: 4px;
+            transition: width var(--transition-slow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .nav-section {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 0;
+        }
+
+        .nav-section-title {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--accent-blue);
+        }
+
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            border-left-color: var(--accent-blue);
+        }
+
+        .nav-item.completed {
+            border-left-color: var(--accent-green);
+        }
+
+        .nav-item.completed:hover {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .nav-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-item.locked:hover {
+            background: transparent;
+            border-left-color: transparent;
+        }
+
+        .nav-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
+
+        .nav-item.active .nav-number {
+            background: var(--accent-blue);
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .nav-item.completed .nav-number {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .nav-content {
+            flex: 1;
+        }
+
+        .nav-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+        }
+
+        .nav-item.active .nav-title {
+            color: var(--text-primary);
+        }
+
+        .nav-item.completed .nav-title {
+            color: var(--accent-green);
+        }
+
+        .nav-status {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .nav-icon-lock {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-sidebar {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-sidebar:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-light);
+            color: var(--text-primary);
+        }
+
+        /* ============================================
+           CONTENIDO PRINCIPAL
+           ============================================ */
+        .main-content {
+            flex: 1;
+            margin-left: 300px;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            position: relative;
+        }
+
+        .main-content::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 300px;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at top, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Layout de dos columnas: contenido + quiz */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .content-main {
+            min-width: 0;
+        }
+
+        .content-sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-top: 0;
+        }
+
+        /* Responsive: en pantallas pequeñas vuelve a una columna */
+        @media (max-width: 1200px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-sidebar {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        /* ============================================
+           HEADER MÓVIL
+           ============================================ */
+        .mobile-header {
+            display: none;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .mobile-header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-progress {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           COMPONENTES DE CONTENIDO
+           ============================================ */
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.875rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-blue-light);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .card:hover {
+            border-color: var(--border-light);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-blue);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .card-content p {
+            margin-bottom: 1rem;
+        }
+
+        .card-content ul,
+        .card-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .card-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ============================================
+           QUIZ COMPONENTES
+           ============================================ */
+        .quiz-container {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .quiz-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .quiz-progress-dots {
+            display: flex;
+            gap: 0.375rem;
+        }
+
+        .quiz-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--bg-hover);
+            transition: all var(--transition-fast);
+        }
+
+        .quiz-dot.active {
+            background: var(--accent-blue);
+            box-shadow: 0 0 8px var(--accent-blue);
+        }
+
+        .quiz-dot.correct {
+            background: var(--accent-green);
+        }
+
+        .quiz-question {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateX(5px);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .quiz-option-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+            transition: all var(--transition-fast);
+        }
+
+        .quiz-option:hover .quiz-option-letter {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .quiz-option.correct .quiz-option-letter {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .quiz-option.incorrect .quiz-option-letter {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .quiz-option-text {
+            flex: 1;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .quiz-option:hover .quiz-option-text,
+        .quiz-option.selected .quiz-option-text {
+            color: var(--text-primary);
+        }
+
+        .quiz-feedback {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .quiz-feedback.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .quiz-completed {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .quiz-completed-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            animation: pulse 0.6s ease;
+        }
+
+        .quiz-completed h3 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-completed p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-score-display {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-green);
+            border-radius: var(--radius-xl);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        /* ============================================
+           PANEL DE IA
+           ============================================ */
+        .ai-panel {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .ai-panel.disabled {
+            opacity: 0.6;
+            filter: grayscale(0.5);
+        }
+
+        .ai-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .ai-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .ai-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .ai-model-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--accent-purple);
+            margin-left: auto;
+        }
+
+        .ai-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .ai-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all var(--transition-fast);
+        }
+
+        .ai-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .ai-input::placeholder {
+            color: var(--text-dark);
+        }
+
+        .ai-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .ai-output {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            min-height: 120px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            display: none;
+        }
+
+        .ai-output.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .ai-output.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+
+        .ai-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* ============================================
+           BOTONES
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-primary {
+            background: var(--gradient-blue);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+            border-color: var(--border-light);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-muted);
+            color: var(--text-primary);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        /* ============================================
+           NAVEGACIÓN DE SECCIONES
+           ============================================ */
+        .section-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-error {
+            color: var(--accent-red);
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .nav-error.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        /* ============================================
+           PANTALLA DE LOGIN
+           ============================================ */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 480px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .login-hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-blue);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow-glow);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .login-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-label-required::after {
+            content: ' *';
+            color: var(--accent-red);
+        }
+
+        .form-input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-dark);
+        }
+
+        .form-input.has-icon {
+            padding-right: 3rem;
+        }
+
+        .form-input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0.25rem;
+            transition: color var(--transition-fast);
+        }
+
+        .form-input-icon:hover {
+            color: var(--text-primary);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239CA3AF'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.25rem;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-hint {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .form-hint a {
+            color: var(--accent-blue-light);
+            text-decoration: none;
+        }
+
+        .form-hint a:hover {
+            text-decoration: underline;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .login-divider span {
+            padding: 0 1rem;
+        }
+
+        .status-message {
+            padding: 0.875rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .status-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .status-message.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .status-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .status-message.loading {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* ============================================
+           PANTALLA FINAL
+           ============================================ */
+        .final-screen {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .final-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--gradient-success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin: 0 auto 2rem;
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.4);
+            animation: pulse 1s ease;
+        }
+
+        .final-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .final-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .final-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .final-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .result-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .result-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .result-code {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.8rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+
+        /* ============================================
+           UTILIDADES
+           ============================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ============================================
+           TOAST NOTIFICATIONS
+           ============================================ */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--accent-red);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .toast-message {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .main-content::before {
+                left: 0;
+            }
+
+            .mobile-header {
+                display: block;
+            }
+
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 99;
+                display: none;
+            }
+
+            .overlay.show {
+                display: block;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-wrapper {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .quiz-container {
+                padding: 1.5rem;
+            }
+
+            .section-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .ai-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* ============================================
+           LISTAS Y TIPS
+           ============================================ */
+        .tips-list {
+            list-style: none;
+            margin-left: 0 !important;
+        }
+
+        .tips-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tips-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tip-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.08);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1rem 1.25rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: rgba(245, 158, 11, 0.08);
+            border-left: 4px solid var(--accent-yellow);
+            padding: 1rem 1.25rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 4px solid var(--accent-green);
+            padding: 1rem 1.25rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- PANTALLA DE LOGIN -->
+    <div id="loginScreen" class="login-overlay">
+        <div class="login-container">
+            <div class="login-hero">
+                <div class="login-logo">📄</div>
+                <h1 class="login-title">Guía Interactiva IEEE</h1>
+                <p class="login-subtitle">
+                    Aprende a redactar artículos científicos de forma interactiva con asistencia de IA
+                </p>
+            </div>
+
+            <div class="login-card">
+                <div class="form-group">
+                    <label class="form-label">Modelo de IA</label>
+                    <select id="modelSelect" class="form-select">
+                    	<option value="gemini-3-flash-preview">Gemini 3.0 Flash (Rápido)</option>
+                        <option value="gemini-2.0-flash">Gemini 2.0 Flash (Rápido)</option>
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                        <option value="gemini-1.5-pro">Gemini 1.5 Pro (Avanzado)</option>
+                        <option value="gemini-1.5-flash-8b">Gemini 1.5 Flash-8B (Económico)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">API Key de Google AI</label>
+                    <div class="form-input-wrapper">
+                        <input type="password" id="apiKeyInput" class="form-input has-icon" placeholder="Ingresa tu API Key...">
+                        <button type="button" class="form-input-icon" id="toggleApiKey" title="Mostrar/Ocultar">👁️</button>
+                    </div>
+                    <p class="form-hint">
+                        Obtén tu API Key gratuita en <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>. Tu clave se procesa localmente y nunca se almacena en servidores.
+                    </p>
+                </div>
+
+                <button id="validateApiBtn" class="btn btn-primary btn-full btn-lg">
+                    <span>Validar y Continuar</span>→
+                </button>
+
+                <div class="login-divider"><span>o</span></div>
+
+                <button id="offlineBtn" class="btn btn-outline btn-full">Continuar sin IA (Modo Educativo)</button>
+
+                <div id="loginStatus" class="status-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APLICACIÓN PRINCIPAL -->
+    <div id="appScreen" class="app-wrapper hidden">
+        <div id="mobileOverlay" class="overlay"></div>
+
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">📄</div>
+                    <span>IEEE Guide</span>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Progreso del Curso</span>
+                    <span id="progressPercentage" class="progress-percentage">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <nav class="nav-section">
+                <div class="nav-section-title">Contenido del Curso</div>
+                <div id="navItemsContainer"></div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-sidebar">
+                    <span>🚪</span><span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="mobile-header">
+                <div class="mobile-header-content">
+                    <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+                    <div class="logo" style="font-size: 1rem;">
+                        <div class="logo-icon" style="width: 32px; height: 32px; font-size: 1rem;">📄</div>
+                        <span>IEEE Guide</span>
+                    </div>
+                    <span id="mobileProgress" class="mobile-progress">0%</span>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <header class="section-header">
+                    <div id="sectionBadge" class="section-badge">
+                        <span>📚</span><span>Sección 1 de 11</span>
+                    </div>
+                    <h1 id="sectionTitle" class="section-title">Título de la Sección</h1>
+                    <p id="sectionSubtitle" class="section-subtitle">Subtítulo descriptivo</p>
+                </header>
+
+                <div class="content-layout">
+                    <div class="content-main">
+                        <div id="contentMainArea"></div>
+                        
+                        <div class="section-nav">
+                            <button id="prevBtn" class="btn btn-secondary">← Anterior</button>
+                            <div>
+                                <div id="navError" class="nav-error">Completa el quiz para desbloquear la siguiente sección</div>
+                                <button id="nextBtn" class="btn btn-primary" disabled>Siguiente →</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-sidebar">
+                        <div id="quizSidebarArea"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- PANTALLA FINAL -->
+    <div id="finalScreen" class="login-overlay hidden">
+        <div class="login-container">
+            <div class="final-screen">
+                <div class="final-icon">🎉</div>
+                <h1 class="final-title">¡Felicitaciones!</h1>
+                <p class="final-subtitle">Has completado exitosamente el curso de redacción científica IEEE</p>
+
+                <div class="final-stats">
+                    <div class="stat-card">
+                        <div id="finalScore" class="stat-value">0%</div>
+                        <div class="stat-label">Calificación Final</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="finalSections" class="stat-value">0/11</div>
+                        <div class="stat-label">Secciones Completadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="finalTime" class="stat-value">--</div>
+                        <div class="stat-label">Tiempo de Estudio</div>
+                    </div>
+                </div>
+
+                <div class="final-form">
+                    <div class="form-group">
+                        <label class="form-label form-label-required">Nombre Completo</label>
+                        <input type="text" id="studentName" class="form-input" placeholder="Ingresa tu nombre...">
+                    </div>
+
+                    <button id="generateCodeBtn" class="btn btn-success btn-full btn-lg">Generar Código de Entrega</button>
+                </div>
+
+                <div id="resultBox" class="result-box">
+                    <div class="result-header">
+                        <span class="result-title">Código de Entrega</span>
+                        <button id="copyCodeBtn" class="btn btn-sm btn-secondary">📋 Copiar</button>
+                    </div>
+                    <textarea id="resultCode" class="result-code" readonly></textarea>
+                    <p style="font-size: 0.875rem; color: var(--text-muted);">Comparte este código con tu docente para validar tu progreso.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // CONFIGURACIÓN Y DATOS
+        const AI_MODELS = {
+            'gemini-3-flash-preview': { name: 'Gemini 3.0 Flash Preview', maxTokens: 8192 },
+            'gemini-2.0-flash': { name: 'Gemini 2.0 Flash', maxTokens: 8192 },
+            'gemini-1.5-flash': { name: 'Gemini 1.5 Flash', maxTokens: 8192 },
+            'gemini-1.5-pro': { name: 'Gemini 1.5 Pro', maxTokens: 8192 },
+            'gemini-1.5-flash-8b': { name: 'Gemini 1.5 Flash-8B', maxTokens: 8192 }
+        };
+
+        const API_KEY = '';
+
+        const COURSE_CONTENT = [
+            {
+                id: 'topic',
+                icon: '💡',
+                title: 'Definición del Tema',
+                subtitle: 'El fundamento de toda investigación científica',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">🎯</div><h3 class="card-title">¿Qué es un tema de investigación?</h3></div><div class="card-content"><p>Todo gran artículo científico comienza con una <strong>pregunta clara y bien definida</strong>. La ambigüedad es el enemigo número uno de la investigación científica.</p><div class="info-box"><strong>Tres pilares fundamentales:</strong></div><ul><li><strong>Relevancia:</strong> ¿A quién le importa este problema? ¿Resuelve una necesidad real?</li><li><strong>Novedad:</strong> ¿Qué aportas nuevo al campo del conocimiento?</li><li><strong>Viabilidad:</strong> ¿Tienes los recursos, tiempo y acceso para realizar la investigación?</li></ul><div class="warning-box"><strong>Evita:</strong> Temas demasiado amplios, temas sin fuentes de datos, o temas ya exhaustivamente investigados.</div></div></div><div class="card"><div class="card-header"><div class="card-icon">🔍</div><h3 class="card-title">Cómo delimitar tu tema</h3></div><div class="card-content"><p>Usa la estrategia <strong>FEW</strong> para enfocar tu investigación:</p><ul class="tips-list"><li><span class="tip-icon">F</span><div><strong>Foco:</strong> Define el área específica de estudio</div></li><li><span class="tip-icon">E</span><div><strong>Ejemplo:</strong> En lugar de "Redes", usa "Optimización de redes 5G en entornos urbanos"</div></li><li><span class="tip-icon">W</span><div><strong>Why:</strong> Justifica por qué es importante investigar esto ahora</div></li></ul></div></div>`,
+                aiPrompt: "Genera 3 propuestas de temas de investigación actuales y viables para estudiantes universitarios. Para cada tema, incluye: título tentativo, problema de investigación, y justificación de relevancia. Contexto: ",
+                quiz: [
+                    { question: "¿Qué característica NO es prioritaria al elegir un tema de investigación?", options: ["Que sea relevante para la comunidad científica", "Que sea costoso y difícil de investigar", "Que sea viable con los recursos disponibles"], correct: 1, explanation: "La viabilidad es crucial. Un tema demasiado costoso o complejo puede impedir completar la investigación." },
+                    { question: "¿Qué significa la 'Novedad' en un tema de investigación?", options: ["Un tema que nadie ha escuchado antes", "Un aporte nuevo al campo del conocimiento existente", "Usar tecnología de última generación"], correct: 1, explanation: "La novedad se refiere a aportar algo nuevo, ya sea un enfoque diferente, nuevos datos, o nuevas conclusiones." },
+                    { question: "¿Por qué es importante la viabilidad de un tema?", options: ["Para gastar menos dinero", "Para asegurar que la investigación se pueda completar", "Para publicar más rápido"], correct: 1, explanation: "La viabilidad asegura que tienes acceso a datos, recursos y tiempo suficiente para completar el estudio." }
+                ]
+            },
+            {
+                id: 'literature',
+                icon: '📚',
+                title: 'Revisión de Literatura',
+                subtitle: 'No reinventes la rueda, conoce el estado del arte',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">📖</div><h3 class="card-title">¿Por qué revisar la literatura?</h3></div><div class="card-content"><p>La revisión sistemática de literatura te permite:</p><ul><li><strong>Conocer el estado del arte:</strong> ¿Qué se ha investigado hasta ahora?</li><li><strong>Identificar brechas:</strong> ¿Qué aspectos aún no han sido estudiados?</li><li><strong>Fundamentar tu trabajo:</strong> Apoya tus argumentos con evidencia científica</li><li><strong>Evitar redundancias:</strong> No repitas estudios ya realizados</li></ul><div class="success-box"><strong>Bases de datos recomendadas:</strong> IEEE Xplore, Scopus, Web of Science, ScienceDirect, Google Scholar</div></div></div><div class="card"><div class="card-header"><div class="card-icon">🔎</div><h3 class="card-title">Estrategias de búsqueda</h3></div><div class="card-content"><p>Utiliza <strong>strings de búsqueda</strong> efectivos combinando términos con operadores booleanos:</p><ul class="tips-list"><li><span class="tip-icon">AND</span><div><strong>Intersección:</strong> "machine learning" AND "healthcare" (ambos términos)</div></li><li><span class="tip-icon">OR</span><div><strong>Unión:</strong> "neural networks" OR "deep learning" (cualquiera)</div></li><li><span class="tip-icon">NOT</span><div><strong>Exclusión:</strong> "renewable energy" NOT "solar" (excluye solar)</div></li></ul><div class="info-box"><strong>Tip:</strong> Usa comillas para búsquedas exactas y asteriscos para truncamiento</div></div></div>`,
+                aiPrompt: "Genera 5 strings de búsqueda efectivos para bases de datos científicas sobre el tema: ",
+                quiz: [
+                    { question: "¿Cuál es el objetivo principal de la revisión de literatura?", options: ["Copiar lo que otros han hecho", "Conocer el estado del arte y fundamentar tu trabajo", "Llenar espacio en el artículo"], correct: 1, explanation: "La revisión te permite entender qué se ha hecho y cómo tu trabajo contribuye al campo." },
+                    { question: "¿Qué base de datos es más relevante para ingeniería y computación?", options: ["Wikipedia", "IEEE Xplore", "Reddit"], correct: 1, explanation: "IEEE Xplore es la base de datos más importante para literatura científica en ingeniería." },
+                    { question: "¿Qué buscas principalmente en papers previos?", options: ["Metodologías y resultados relevantes", "Solo las fotos y gráficas", "La biografía de los autores"], correct: 0, explanation: "Necesitas entender qué métodos usaron y qué resultados obtuvieron para comparar con tu trabajo." }
+                ]
+            },
+            {
+                id: 'title',
+                icon: '📝',
+                title: 'El Título',
+                subtitle: 'La primera impresión cuenta',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">✨</div><h3 class="card-title">Características de un buen título</h3></div><div class="card-content"><p>El título es la primera impresión de tu trabajo. Debe ser <strong>informativo, conciso y atractivo</strong>.</p><div class="info-box"><strong>Fórmula efectiva:</strong><br>[Variable dependiente] + [Variable independiente] + [Contexto o método]</div><ul><li><strong>Conciso:</strong> Entre 10-15 palabras idealmente</li><li><strong>Específico:</strong> Indica exactamente de qué trata el estudio</li><li><strong>Keywords:</strong> Incluye términos clave para indexación</li><li><strong>Atractivo:</strong> Genera interés sin ser sensacionalista</li></ul><div class="warning-box"><strong>Ejemplo malo:</strong> "Estudio sobre computadoras"<br><strong>Ejemplo bueno:</strong> "Optimización de algoritmos de aprendizaje profundo para diagnóstico médico en tiempo real"</div></div></div><div class="card"><div class="card-header"><div class="card-icon">⚠️</div><h3 class="card-title">Errores comunes a evitar</h3></div><div class="card-content"><ul class="tips-list"><li><span class="tip-icon">❌</span><div><strong>Títulos demasiado largos:</strong> Más de 20 palabras dificultan la lectura</div></li><li><span class="tip-icon">❌</span><div><strong>Títulos vagos:</strong> No dan idea del contenido específico</div></li><li><span class="tip-icon">❌</span><div><strong>Jerga innecesaria:</strong> Evita acrónimos poco conocidos sin explicar</div></li><li><span class="tip-icon">❌</span><div><strong>Preguntas:</strong> Los títulos interrogativos son menos comunes en IEEE</div></li></ul></div></div>`,
+                aiPrompt: "Genera 5 opciones de títulos académicos estilo IEEE para un artículo de investigación sobre: ",
+                quiz: [
+                    { question: "¿Cuál es una característica del mejor título?", options: ["Informe sobre redes", "Optimización de redes 5G mediante algoritmos genéticos", "Estudio de cosas interesantes"], correct: 1, explanation: "Un buen título debe ser específico, indicar el tema y aproximadamente el enfoque metodológico." },
+                    { question: "¿Qué longitud es ideal para un título científico?", options: ["50 palabras para ser descriptivo", "Conciso, entre 10-15 palabras", "1 palabra impactante"], correct: 1, explanation: "La mayoría de las revistas recomiendan títulos entre 10-15 palabras que sean informativos pero concisos." },
+                    { question: "¿Qué debes evitar en un título?", options: ["Palabras técnicas relevantes", "Ambigüedad y vaguedad", "Nombres de variables importantes"], correct: 1, explanation: "La ambigüedad confunde al lector sobre el verdadero contenido de tu investigación." }
+                ]
+            },
+            {
+                id: 'abstract',
+                icon: '📄',
+                title: 'Resumen (Abstract)',
+                subtitle: 'Tu carta de presentación en 200 palabras',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">📋</div><h3 class="card-title">Estructura del Abstract</h3></div><div class="card-content"><p>El abstract es un resumen conciso que debe incluir <strong>todos los elementos esenciales</strong> de tu investigación:</p><ol><li><strong>Contexto:</strong> ¿Cuál es el problema o área de estudio?</li><li><strong>Gap/Necesidad:</strong> ¿Qué falta en el conocimiento actual?</li><li><strong>Método:</strong> ¿Cómo abordaste el problema?</li><li><strong>Resultados:</strong> ¿Cuáles fueron tus hallazgos principales?</li><li><strong>Conclusión:</strong> ¿Qué implican tus resultados?</li></ol><div class="success-box"><strong>Longitud recomendada:</strong> 150-250 palabras para la mayoría de revistas IEEE</div></div></div><div class="card"><div class="card-header"><div class="card-icon">💡</div><h3 class="card-title">Consejos para escribir el Abstract</h3></div><div class="card-content"><ul class="tips-list"><li><span class="tip-icon">1</span><div><strong>Escríbelo al final:</strong> Después de completar todo el artículo</div></li><li><span class="tip-icon">2</span><div><strong>Usa lenguaje claro:</strong> Evita siglas sin definir y jerga excesiva</div></li><li><span class="tip-icon">3</span><div><strong>Incluye keywords:</strong> Facilita la indexación en bases de datos</div></li><li><span class="tip-icon">4</span><div><strong>Sin citas:</strong> El abstract no lleva referencias bibliográficas</div></li><li><span class="tip-icon">5</span><div><strong>Standalone:</strong> Debe entenderse sin leer el artículo completo</div></li></ul><div class="warning-box"><strong>Evita:</strong> Referencias citadas, ecuaciones, figuras o tablas en el abstract</div></div></div>`,
+                aiPrompt: "Escribe un abstract profesional de aproximadamente 200 palabras para un artículo científico sobre: ",
+                quiz: [
+                    { question: "¿Qué elemento es crucial incluir en el abstract?", options: ["Resultados clave y principales hallazgos", "Agradecimientos extensos", "Dedicatoria personal"], correct: 0, explanation: "El abstract debe incluir los resultados principales para que el lector sepa qué se encontró." },
+                    { question: "¿Cuándo se recomienda escribir el abstract?", options: ["Al principio, para guiar la escritura", "Al final, cuando el artículo está completo", "A la mitad del proceso"], correct: 1, explanation: "El abstract se escribe al final para poder resumir adecuadamente todo el contenido." },
+                    { question: "¿El abstract debe incluir citas bibliográficas?", options: ["Sí, para fundamentar el contexto", "No, usualmente no lleva citas", "Solo en la conclusión"], correct: 1, explanation: "El abstract es un resumen independiente y no incluye referencias citadas." }
+                ]
+            },
+            {
+                id: 'intro',
+                icon: '🚪',
+                title: 'Introducción',
+                subtitle: 'Del contexto general a tu objetivo específico',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">🎯</div><h3 class="card-title">Estructura de embudo</h3></div><div class="card-content"><p>La introducción sigue una estructura de <strong>pirámide invertida</strong> (embudo):</p><div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-md); margin: 1rem 0;"><div style="text-align: center; padding: 1rem; background: var(--bg-hover); border-radius: var(--radius-md); margin-bottom: 0.5rem;"><strong>1. Contexto amplio</strong><br><small>El área general de estudio</small></div><div style="text-align: center; padding: 1rem; background: var(--bg-hover); border-radius: var(--radius-md); margin: 0 auto 0.5rem; width: 90%;"><strong>2. Literatura previa</strong><br><small>Qué se ha investigado</small></div><div style="text-align: center; padding: 1rem; background: var(--bg-hover); border-radius: var(--radius-md); margin: 0 auto 0.5rem; width: 80%;"><strong>3. Brecha identificada</strong><br><small>Qué falta por investigar</small></div><div style="text-align: center; padding: 1rem; background: var(--accent-blue); border-radius: var(--radius-md); margin: 0 auto; width: 70%;"><strong>4. Objetivo del estudio</strong><br><small>Tu contribución</small></div></div></div></div><div class="card"><div class="card-header"><div class="card-icon">📝</div><h3 class="card-title">Redactando el objetivo</h3></div><div class="card-content"><p>El último párrafo debe declarar claramente el objetivo usando frases como:</p><ul><li>"El objetivo de este trabajo es..."</li><li>"Esta investigación busca..."</li><li>"El propósito de este estudio es..."</li><li>"En este artículo se presenta..."</li></ul><div class="info-box"><strong>Buen objetivo:</strong> Debe ser específico, medible, alcanzable, relevante y con límite de tiempo (SMART)</div><div class="success-box"><strong>Estructura recomendada:</strong><br>"Este estudio [verbo activo] + [qué se investiga] + [en qué contexto] + [para qué propósito]"</div></div></div>`,
+                aiPrompt: "Redacta un párrafo de introducción que plantee el objetivo de investigación para un estudio sobre: ",
+                quiz: [
+                    { question: "¿Cómo debe terminar la introducción?", options: ["Con una pregunta retórica", "Declarando claramente el objetivo del estudio", "Con una lista de referencias"], correct: 1, explanation: "La introducción debe cerrar con una declaración clara del objetivo o propósito de la investigación." },
+                    { question: "¿Qué estructura se recomienda para la introducción?", options: ["Pirámide invertida (de lo general a lo específico)", "Estructura circular", "Orden cronológico estricto"], correct: 0, explanation: "La estructura de embudo (pirámide invertida) guía al lector desde el contexto amplio hasta tu objetivo específico." },
+                    { question: "¿Qué se justifica en la introducción?", options: ["El presupuesto del proyecto", "El problema de investigación y su importancia", "El horario de trabajo"], correct: 1, explanation: "La introducción debe justificar por qué el problema de investigación es relevante y merece ser estudiado." }
+                ]
+            },
+            {
+                id: 'methodology',
+                icon: '🔬',
+                title: 'Metodología',
+                subtitle: 'La receta reproducible de tu investigación',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">🧪</div><h3 class="card-title">¿Qué es la metodología?</h3></div><div class="card-content"><p>La metodología es la <strong>"receta de cocina"</strong> de tu investigación. Debe ser tan clara que cualquier otro investigador pueda replicar tu estudio.</p><div class="info-box"><strong>Principio fundamental:</strong> Reproducibilidad. Otros deben poder obtener resultados similares siguiendo tus pasos.</div><ul><li><strong>Diseño de investigación:</strong> Experimental, cuasi-experimental, descriptivo, etc.</li><li><strong>Población y muestra:</strong> ¿Quiénes participaron? ¿Cómo se seleccionaron?</li><li><strong>Instrumentos:</strong> ¿Qué herramientas usaste para recolectar datos?</li><li><strong>Procedimiento:</strong> ¿Cómo se llevaron a cabo las actividades paso a paso?</li><li><strong>Análisis de datos:</strong> ¿Qué técnicas estadísticas o cualitativas aplicaste?</li></ul></div></div><div class="card"><div class="card-header"><div class="card-icon">📊</div><h3 class="card-title">Diagramas de flujo</h3></div><div class="card-content"><p>Un diagrama de flujo ayuda a visualizar el proceso metodológico:</p><ul class="tips-list"><li><span class="tip-icon">1</span><div><strong>Inicio:</strong> Identificación del problema</div></li><li><span class="tip-icon">2</span><div><strong>Proceso:</strong> Recolección y análisis de datos</div></li><li><span class="tip-icon">3</span><div><strong>Decisión:</strong> Validación de hipótesis</div></li><li><span class="tip-icon">4</span><div><strong>Fin:</strong> Conclusiones y recomendaciones</div></li></ul><div class="success-box"><strong>Tiempo verbal:</strong> Usa el pasado ("se recolectaron", "se analizaron") para describir lo que ya hiciste.</div></div></div>`,
+                aiPrompt: "Genera una estructura detallada de metodología para una investigación sobre: ",
+                quiz: [
+                    { question: "¿Cuál es el propósito principal de la metodología?", options: ["Impresionar con técnicas complejas", "Permitir que otros repliquen el estudio", "Llenar páginas del artículo"], correct: 1, explanation: "La metodología debe ser lo suficientemente detallada para que otros investigadores puedan reproducir tu estudio." },
+                    { question: "¿Qué herramienta ayuda a describir procesos metodológicos?", options: ["Fotos personales", "Diagramas de flujo", "Memes"], correct: 1, explanation: "Los diagramas de flujo visualizan de manera clara los pasos del proceso metodológico." },
+                    { question: "¿Qué tiempo verbal se usa en la metodología?", options: ["Futuro", "Pasado", "Imperativo"], correct: 1, explanation: "La metodología se describe en pasado porque relata lo que ya se hizo en la investigación." }
+                ]
+            },
+            {
+                id: 'results',
+                icon: '📈',
+                title: 'Resultados',
+                subtitle: 'Presenta los hechos sin interpretación',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">📊</div><h3 class="card-title">Características de los Resultados</h3></div><div class="card-content"><p>La sección de resultados presenta <strong>hechos objetivos</strong> sin interpretación ni análisis subjetivo.</p><div class="warning-box"><strong>Regla de oro:</strong> Los resultados responden "¿Qué encontraste?" La discusión responde "¿Qué significa?"</div><ul><li><strong>Objetividad:</strong> Presenta datos sin juicios de valor</li><li><strong>Claridad:</strong> Usa tablas y figuras para organizar información compleja</li><li><strong>Relevancia:</strong> Solo incluye resultados relacionados con tus objetivos</li><li><strong>Precisión:</strong> Incluye valores estadísticos (promedios, desviaciones, p-values)</li></ul></div></div><div class="card"><div class="card-header"><div class="card-icon">🎨</div><h3 class="card-title">Gráficas y Tablas</h3></div><div class="card-content"><p><strong>Para gráficas:</strong></p><ul class="tips-list"><li><span class="tip-icon">✓</span><div>Título descriptivo arriba (Figura 1: Evolución de...)</div></li><li><span class="tip-icon">✓</span><div>Ejes etiquetados con unidades</div></li><li><span class="tip-icon">✓</span><div>Leyenda clara si hay múltiples series</div></li><li><span class="tip-icon">✓</span><div>Resolución adecuada (300 DPI mínimo)</div></li></ul><p><strong>Para tablas:</strong></p><ul class="tips-list"><li><span class="tip-icon">✓</span><div>Título descriptivo arriba (Tabla 1: Comparación de...)</div></li><li><span class="tip-icon">✓</span><div>Encabezados claros con unidades</div></li><li><span class="tip-icon">✓</span><div>Notas al pie si es necesario</div></li></ul><div class="info-box"><strong>Referencias:</strong> Siempre menciona las figuras y tablas en el texto ("La Figura 1 muestra...", "Como se observa en la Tabla 2...")</div></div></div>`,
+                aiPrompt: "Sugiere qué tipo de gráficas o tablas serían más apropiadas para presentar resultados sobre: ",
+                quiz: [
+                    { question: "¿Qué evitar en la sección de resultados?", options: ["Tablas organizadas", "Interpretaciones subjetivas", "Datos numéricos"], correct: 1, explanation: "Las interpretaciones y análisis van en la sección de Discusión, no en Resultados." },
+                    { question: "¿Cómo referirse correctamente a una figura?", options: ["'Como se ve abajo'", "'La Figura 1 muestra...'", "'Mira esto'"], correct: 1, explanation: "Usa referencias formales como 'La Figura 1 muestra...' o 'Como se observa en la Tabla 2...'" },
+                    { question: "¿Los resultados deben comentarse?", options: ["No, solo presentar datos", "Sí, describir tendencias observadas", "Solo pegar gráficas sin texto"], correct: 1, explanation: "Debes describir brevemente lo que muestran los datos, pero sin interpretar o analizar en profundidad." }
+                ]
+            },
+            {
+                id: 'discussion',
+                icon: '💭',
+                title: 'Discusión',
+                subtitle: 'Interpreta y contextualiza tus hallazgos',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">🔍</div><h3 class="card-title">Propósito de la Discusión</h3></div><div class="card-content"><p>La discusión es donde <strong>interpretas tus resultados</strong> y explicas su significado en el contexto de la literatura existente.</p><div class="info-box"><strong>Responde a:</strong> ¿Por qué obtuviste estos resultados? ¿Cómo se comparan con otros estudios? ¿Qué implicaciones tienen?</div><ul><li><strong>Interpretación:</strong> Explica el significado de tus hallazgos</li><li><strong>Comparación:</strong> Contrasta con estudios previos de la literatura</li><li><strong>Validación:</strong> ¿Apoyan o contradicen tus resultados la hipótesis?</li><li><strong>Implicaciones:</strong> ¿Qué significan tus resultados para la práctica o teoría?</li><li><strong>Limitaciones:</strong> Reconoce las debilidades del estudio</li></ul></div></div><div class="card"><div class="card-header"><div class="card-icon">📝</div><h3 class="card-title">Frases útiles para la discusión</h3></div><div class="card-content"><p><strong>Para comparar con otros estudios:</strong></p><ul class="tips-list"><li><span class="tip-icon">→</span><div>"Estos resultados son consistentes con los hallazgos de [Autor, Año]..."</div></li><li><span class="tip-icon">→</span><div>"Contrariamente a lo reportado por [Autor, Año], nuestros datos muestran..."</div></li><li><span class="tip-icon">→</span><div>"Nuestros hallazgos amplían el trabajo previo de [Autor] al demostrar..."</div></li></ul><p><strong>Para explicar discrepancias:</strong></p><ul class="tips-list"><li><span class="tip-icon">→</span><div>"Esta diferencia puede explicarse por..."</div></li><li><span class="tip-icon">→</span><div>"Una posible explicación para este hallazgo inesperado es..."</div></li></ul><div class="warning-box"><strong>Sé honesto:</strong> Si un resultado contradice tu hipótesis, explícalo. No ignores datos inconvenientes ni fuerces interpretaciones.</div></div></div>`,
+                aiPrompt: "Genera 5 frases académicas para comparar resultados con estudios previos en un artículo sobre: ",
+                quiz: [
+                    { question: "¿Qué es fundamental en la discusión?", options: ["Comparar con literatura previa", "Repetir los datos numéricos", "Agradecer a los participantes"], correct: 0, explanation: "La discusión debe contextualizar tus resultados comparándolos con estudios previos de la literatura." },
+                    { question: "¿Qué hacer si un resultado no respalda la hipótesis?", options: ["Ocultarlo o ignorarlo", "Analizar por qué falló y discutirlo honestamente", "Cambiar los datos"], correct: 1, explanation: "La honestidad científica requiere discutir todos los resultados, incluso los que no confirman la hipótesis inicial." },
+                    { question: "¿Se valida la hipótesis en la discusión?", options: ["Sí, se analiza si los resultados la apoyan", "No, eso se hace en resultados", "Solo en la conclusión"], correct: 0, explanation: "En la discusión se interpreta si los resultados apoyan, contradicen o modifican la hipótesis planteada." }
+                ]
+            },
+            {
+                id: 'conclusions',
+                icon: '✅',
+                title: 'Conclusiones',
+                subtitle: 'Resume y proyecta el trabajo futuro',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">🎯</div><h3 class="card-title">Estructura de las Conclusiones</h3></div><div class="card-content"><p>Las conclusiones responden <strong>directamente a los objetivos</strong> planteados en la introducción.</p><div class="success-box"><strong>No incluyas:</strong> Nuevos datos que no aparecieron en resultados, ni citas bibliográficas extensas.</div><ul><li><strong>Síntesis:</strong> Resume los hallazgos principales (1-2 párrafos)</li><li><strong>Respuesta a objetivos:</strong> Cada conclusión debe responder a un objetivo</li><li><strong>Contribución:</strong> ¿Qué aporta tu estudio al campo?</li><li><strong>Limitaciones:</strong> Menciona brevemente las limitaciones metodológicas</li><li><strong>Trabajo futuro:</strong> Sugiere líneas de investigación posteriores</li></ul></div></div><div class="card"><div class="card-header"><div class="card-icon">🚀</div><h3 class="card-title">Trabajo futuro</h3></div><div class="card-content"><p>El trabajo futuro muestra que entiendes el alcance de tu investigación y tienes visión sobre cómo continuar:</p><ul class="tips-list"><li><span class="tip-icon">1</span><div><strong>Ampliación:</strong> "Futuros estudios deberían incluir una muestra más grande..."</div></li><li><span class="tip-icon">2</span><div><strong>Diferentes contextos:</strong> "Sería valioso replicar este estudio en..."</div></li><li><span class="tip-icon">3</span><div><strong>Variables adicionales:</strong> "Se recomienda explorar el efecto de..."</div></li><li><span class="tip-icon">4</span><div><strong>Metodología alternativa:</strong> "Un enfoque longitudinal podría..."</div></li></ul><div class="info-box"><strong>Limitaciones:</strong> Mencionar limitaciones no es debilidad. Demuestra que entiendes el alcance y validez de tu estudio.</div></div></div>`,
+                aiPrompt: "Redacta 3 conclusiones sólidas y sugerencias de trabajo futuro para una investigación sobre: ",
+                quiz: [
+                    { question: "¿Deben incluirse nuevos datos en las conclusiones?", options: ["Sí, para fortalecer el argumento", "No, solo se resumen datos ya presentados", "Solo si son muy importantes"], correct: 1, explanation: "Las conclusiones solo resumen lo ya presentado. Nunca introduzcas datos nuevos en esta sección." },
+                    { question: "¿Qué deben responder las conclusiones?", options: ["A los objetivos planteados", "Solo al título del artículo", "A las dudas del lector"], correct: 0, explanation: "Cada conclusión debe responder directamente a uno de los objetivos establecidos en la introducción." },
+                    { question: "¿Es bueno mencionar limitaciones del estudio?", options: ["Es signo de debilidad", "Sí, da credibilidad y muestra rigor", "No importa mencionarlas"], correct: 1, explanation: "Reconocer limitaciones demuestra honestidad científica y permite a otros investigadores mejorar el estudio." }
+                ]
+            },
+            {
+                id: 'citations',
+                icon: '📖',
+                title: 'Citas y Referencias',
+                subtitle: 'Formato IEEE y herramientas de gestión',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">🔗</div><h3 class="card-title">Formato IEEE</h3></div><div class="card-content"><p>El estilo IEEE utiliza <strong>numeración consecutiva</strong> entre corchetes:</p><div class="info-box"><strong>Cita en texto:</strong> "Los resultados muestran una mejora significativa [1], [2]. Según Smith et al. [3]..."</div><div class="success-box"><strong>Formato de referencia:</strong><br>[1] A. B. Autor, "Título del artículo," <em>Nombre de la Revista</em>, vol. XX, no. X, pp. XX-XX, Mes Año.</div><p><strong>Ejemplo práctico:</strong></p><div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius-md); font-family: monospace; font-size: 0.85rem;">[1] J. Smith and A. Johnson, "Deep learning approaches for medical image analysis," <em>IEEE Trans. Medical Imaging</em>, vol. 38, no. 4, pp. 937-950, Apr. 2019.</div></div></div><div class="card"><div class="card-header"><div class="card-icon">🛠️</div><h3 class="card-title">Herramientas recomendadas</h3></div><div class="card-content"><p>Estas herramientas facilitan la gestión de referencias:</p><ul class="tips-list"><li><span class="tip-icon">📚</span><div><strong>Mendeley:</strong> Gratuito, sincroniza en la nube, plugin para Word</div></li><li><span class="tip-icon">📚</span><div><strong>Zotero:</strong> Código abierto, extensión para navegadores</div></li><li><span class="tip-icon">📚</span><div><strong>EndNote:</strong> Profesional, usado en muchas universidades</div></li><li><span class="tip-icon">📚</span><div><strong>Google Scholar:</strong> Exporta referencias en formato BibTeX</div></li></ul><div class="warning-box"><strong>Evita el plagio:</strong> Siempre cita las fuentes. Parafrasea correctamente (no copies y pegues) y usa comillas para citas textuales.</div></div></div>`,
+                aiPrompt: "Genera 3 referencias bibliográficas en formato IEEE sobre: ",
+                quiz: [
+                    { question: "¿Qué herramienta se recomienda para gestionar referencias?", options: ["Microsoft Word sin formato", "Mendeley o Zotero", "Bloc de notas"], correct: 1, explanation: "Mendeley, Zotero y EndNote son gestores bibliográficos profesionales que facilitan el formato de referencias." },
+                    { question: "¿Cómo se indican las citas en formato IEEE?", options: ["(Autor, Año)", "[1], [2], [3]", "Notas al pie de página"], correct: 1, explanation: "IEEE usa números entre corchetes que corresponden a la lista de referencias al final." },
+                    { question: "¿Por qué es importante citar correctamente?", options: ["Para evitar plagio y dar crédito", "Para decorar el artículo", "Para cumplir con el formato"], correct: 0, explanation: "Las citas dan crédito a los autores originales, permiten verificar información y evitan el plagio académico." }
+                ]
+            },
+            {
+                id: 'graphics',
+                icon: '🎨',
+                title: 'Gráficas, Tablas y Ecuaciones',
+                subtitle: 'Mejores prácticas de presentación visual',
+                content: `<div class="card"><div class="card-header"><div class="card-icon">📊</div><h3 class="card-title">Mejores prácticas para gráficas</h3></div><div class="card-content"><p>Una buena gráfica comunica información compleja de manera clara:</p><ul class="tips-list"><li><span class="tip-icon">📈</span><div><strong>Tipo adecuado:</strong> Lineales para tendencias, barras para comparaciones, dispersión para correlaciones</div></li><li><span class="tip-icon">📈</span><div><strong>Ejes claros:</strong> Etiquetas descriptivas con unidades (ej: "Tiempo (s)", "Temperatura (°C)")</div></li><li><span class="tip-icon">📈</span><div><strong>Leyenda:</strong> Posición estratégica que no opaque los datos</div></li><li><span class="tip-icon">📈</span><div><strong>Colores:</strong> Paleta accesible, considera daltonismo. Usa contraste suficiente</div></li><li><span class="tip-icon">📈</span><div><strong>Resolución:</strong> Mínimo 300 DPI para impresión, formato vectorial (SVG/PDF) si es posible</div></li></ul><div class="success-box"><strong>Título de figura:</strong> "Fig. 1. Comparación del rendimiento entre los algoritmos A y B en función del tamaño de entrada."</div></div></div><div class="card"><div class="card-header"><div class="card-icon">📋</div><h3 class="card-title">Tablas efectivas</h3></div><div class="card-content"><p>Las tablas organizan datos numéricos o categóricos:</p><ul class="tips-list"><li><span class="tip-icon">📋</span><div><strong>Encabezados claros:</strong> Incluye unidades (ej: "Velocidad (m/s)")</div></li><li><span class="tip-icon">📋</span><div><strong>Alineación:</strong> Texto a la izquierda, números a la derecha</div></li><li><span class="tip-icon">📋</span><div><strong>Consistencia:</strong> Mismo número de decimales en toda la columna</div></li><li><span class="tip-icon">📋</span><div><strong>Notas:</strong> Usa superíndices para aclaraciones al pie</div></li></ul></div></div><div class="card"><div class="card-header"><div class="card-icon">∑</div><h3 class="card-title">Ecuaciones matemáticas</h3></div><div class="card-content"><p>Presenta ecuaciones de manera clara y referenciable:</p><ul class="tips-list"><li><span class="tip-icon">∑</span><div><strong>Numeración:</strong> Ecuaciones importantes deben numerarse (1), (2), etc.</div></li><li><span class="tip-icon">∑</span><div><strong>Definición de variables:</strong> Explica qué representa cada símbolo después de la ecuación</div></li><li><span class="tip-icon">∑</span><div><strong>Formato:</strong> Usa LaTeX o editores de ecuaciones (MathType, Equation Editor)</div></li><li><span class="tip-icon">∑</span><div><strong>Referencia:</strong> Menciona las ecuaciones en el texto ("Como se muestra en la ecuación (3)...")</div></li></ul><div class="info-box"><strong>Herramientas:</strong> LaTeX (para calidad profesional), Microsoft Word (ecuación editor), MathType, Overleaf (colaborativo)</div></div></div>`,
+                aiPrompt: "Sugiere el tipo de gráfica más apropiada y describe cómo estructurarla para presentar datos sobre: ",
+                quiz: [
+                    { question: "¿Qué resolución mínima se recomienda para figuras en artículos científicos?", options: ["72 DPI (web)", "300 DPI", "150 DPI"], correct: 1, explanation: "La mayoría de revistas científicas requieren 300 DPI (dots per inch) para garantizar calidad de impresión." },
+                    { question: "¿Dónde va el título de una tabla?", options: ["Abajo de la tabla", "Arriba de la tabla", "Al lado de la tabla"], correct: 1, explanation: "Por convención, las tablas llevan el título arriba y las figuras llevan el título abajo." },
+                    { question: "¿Por qué numerar las ecuaciones?", options: ["Para decorar el documento", "Para poder referenciarlas en el texto", "Porque IEEE lo exige siempre"], correct: 1, explanation: "Las ecuaciones importantes se numeran para poder referirse a ellas en la discusión." }
+                ]
+            }
+        ];
+
+        // ESTADO DE LA APLICACIÓN
+        const state = {
+            currentSection: 0,
+            apiKey: '',
+            selectedModel: 'gemini-3-flash-preview',
+            isOffline: true,
+            sectionScores: new Array(COURSE_CONTENT.length).fill(0),
+            quizProgress: new Array(COURSE_CONTENT.length).fill(0),
+            shuffledQuizzes: {}, // Almacena las preguntas mezcladas por sección
+            startTime: null,
+            sectionStartTime: null
+        };
+
+        // Función para mezclar array (Fisher-Yates shuffle)
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Función para preparar las preguntas mezcladas de una sección
+        function prepareShuffledQuiz(sectionIndex) {
+            if (!state.shuffledQuizzes[sectionIndex]) {
+                const originalQuiz = COURSE_CONTENT[sectionIndex].quiz;
+                // Mezclar las preguntas
+                const shuffledQuestions = shuffleArray(originalQuiz);
+                
+                // Para cada pregunta, mezclar las opciones y actualizar el índice correcto
+                const shuffledWithOptions = shuffledQuestions.map(q => {
+                    // Crear pares de [opción, índiceOriginal]
+                    const optionsWithIndex = q.options.map((opt, idx) => ({ 
+                        text: opt, 
+                        originalIndex: idx,
+                        isCorrect: idx === q.correct
+                    }));
+                    
+                    // Mezclar las opciones
+                    const shuffledOptions = shuffleArray(optionsWithIndex);
+                    
+                    // Encontrar el nuevo índice de la respuesta correcta
+                    const newCorrectIndex = shuffledOptions.findIndex(opt => opt.isCorrect);
+                    
+                    return {
+                        question: q.question,
+                        options: shuffledOptions.map(opt => opt.text),
+                        correct: newCorrectIndex,
+                        explanation: q.explanation
+                    };
+                });
+                
+                state.shuffledQuizzes[sectionIndex] = shuffledWithOptions;
+            }
+            return state.shuffledQuizzes[sectionIndex];
+        }
+
+        // FUNCIONES DE UTILIDAD
+        function showToast(title, message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
+            toast.innerHTML = `<span class="toast-icon">${icon}</span><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${message}</div></div>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        function showStatus(message, type = 'normal') {
+            const statusEl = document.getElementById('loginStatus');
+            statusEl.textContent = message;
+            statusEl.className = `status-message show ${type}`;
+        }
+
+        function formatTime(minutes) {
+            const hrs = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            return hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+        }
+
+        // FUNCIONES DE IA
+        async function validateApiKey(apiKey, model) {
+            console.log('Api key:', apiKey);
+	    console.log('Modelo:', model);
+	    urlBuffer = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+	    console.log('Modelo Url:', urlBuffer);
+            try {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: 'Hello' }] }] })
+                });
+                const data = await response.json();
+                return response.ok && data.candidates;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        async function generateWithAI(prompt) {
+            if (state.isOffline) throw new Error('Modo offline - IA no disponible');
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${state.selectedModel}:generateContent?key=${state.apiKey}`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error?.message || 'Error en la API');
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        // FUNCIONES DE NAVEGACIÓN
+        function renderSidebar() {
+            const container = document.getElementById('navItemsContainer');
+            container.innerHTML = '';
+            COURSE_CONTENT.forEach((section, index) => {
+                const isCompleted = state.sectionScores[index] === 100;
+                const isActive = index === state.currentSection;
+                const isLocked = index > 0 && state.sectionScores[index - 1] < 100 && index !== state.currentSection;
+                const navItem = document.createElement('div');
+                navItem.className = `nav-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
+                navItem.innerHTML = `<div class="nav-number">${isCompleted ? '✓' : index + 1}</div><div class="nav-content"><div class="nav-title">${section.title}</div><div class="nav-status">${isCompleted ? 'Completado' : isLocked ? 'Bloqueado' : 'Pendiente'}</div></div>${isLocked ? '<span class="nav-icon-lock">🔒</span>' : ''}`;
+                navItem.addEventListener('click', () => {
+                    if (!isLocked) navigateToSection(index);
+                    else showToast('Sección bloqueada', 'Completa la sección anterior primero', 'error');
+                });
+                container.appendChild(navItem);
+            });
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const completedSections = state.sectionScores.filter(score => score === 100).length;
+            const percentage = Math.round((completedSections / COURSE_CONTENT.length) * 100);
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('progressPercentage').textContent = `${percentage}%`;
+            document.getElementById('mobileProgress').textContent = `${percentage}%`;
+        }
+
+        function navigateToSection(index) {
+            if (index < 0 || index >= COURSE_CONTENT.length) return;
+            state.currentSection = index;
+            state.sectionStartTime = Date.now();
+            renderSidebar();
+            renderSection(true); // true = scroll to top
+            updateNavigationButtons();
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('mobileOverlay').classList.remove('show');
+        }
+
+        function renderSection(scrollToTop = true) {
+            const section = COURSE_CONTENT[state.currentSection];
+            document.getElementById('sectionBadge').innerHTML = `<span>${section.icon}</span><span>Sección ${state.currentSection + 1} de ${COURSE_CONTENT.length}</span>`;
+            document.getElementById('sectionTitle').textContent = section.title;
+            document.getElementById('sectionSubtitle').textContent = section.subtitle;
+            
+            // Renderizar contenido principal (izquierda)
+            let mainContentHTML = section.content;
+            
+            // Panel de IA - Generar Ejemplos
+            if (!state.isOffline && section.aiPrompt) {
+                mainContentHTML += `<div class="ai-panel"><div class="ai-panel-header"><div class="ai-icon">🤖</div><div><div class="ai-title">Asistente IA</div><div class="ai-subtitle">Genera ejemplos personalizados</div></div><span class="ai-model-badge">${AI_MODELS[state.selectedModel].name}</span></div><div class="ai-input-group"><input type="text" id="aiInput" class="ai-input" placeholder="Describe tu contexto (ej: 'redes neuronales para diagnóstico médico')..."></div><div class="ai-actions"><button id="generateBtn" class="btn btn-primary">⚡ Generar Ejemplo</button></div><div id="aiOutput" class="ai-output"></div></div>`;
+            }
+            
+            // Panel de IA - Validar Mi Contenido
+            if (!state.isOffline) {
+                mainContentHTML += renderAIValidationPanel(section);
+            }
+            
+            document.getElementById('contentMainArea').innerHTML = mainContentHTML;
+            
+            // Renderizar quiz en el sidebar (derecha) - con preguntas mezcladas
+            const shuffledQuiz = prepareShuffledQuiz(state.currentSection);
+            document.getElementById('quizSidebarArea').innerHTML = `<div id="quizContainer">${renderQuiz(shuffledQuiz, state.currentSection)}</div>`;
+            
+            setupQuizEvents();
+            setupValidationEvents();
+            const generateBtn = document.getElementById('generateBtn');
+            if (generateBtn) generateBtn.addEventListener('click', handleAIGeneration);
+            
+            // Solo hacer scroll si se solicita explícitamente (cambio de sección)
+            if (scrollToTop) {
+                document.querySelector('.content-wrapper').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Función para renderizar solo el quiz sin afectar el resto del contenido
+        function renderQuizOnly() {
+            const shuffledQuiz = prepareShuffledQuiz(state.currentSection);
+            const quizContainer = document.getElementById('quizContainer');
+            if (quizContainer) {
+                quizContainer.innerHTML = renderQuiz(shuffledQuiz, state.currentSection);
+                setupQuizEvents();
+            }
+        }
+        
+        // Función para renderizar el panel de validación de IA
+        function renderAIValidationPanel(section) {
+            return `
+                <div class="ai-panel validation-panel" style="border-color: rgba(16, 185, 129, 0.3); background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);">
+                    <div class="ai-panel-header">
+                        <div class="ai-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); animation: none;">✓</div>
+                        <div>
+                            <div class="ai-title">Valida tu ${section.title}</div>
+                            <div class="ai-subtitle">¿Ya tienes esta sección escrita? Recibe retroalimentación</div>
+                        </div>
+                        <span class="ai-model-badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-green);">${AI_MODELS[state.selectedModel].name}</span>
+                    </div>
+                    <div class="ai-input-group">
+                        <textarea id="validationInput" class="ai-input" rows="6" placeholder="Pega aquí tu ${section.title.toLowerCase()} escrito y recibirás retroalimentación sobre estructura, claridad y cumplimiento de estándares IEEE..."></textarea>
+                    </div>
+                    <div class="ai-actions">
+                        <button id="validateBtn" class="btn btn-success">
+                            ✓ Validar Mi Contenido
+                        </button>
+                    </div>
+                    <div id="validationOutput" class="ai-output"></div>
+                </div>
+            `;
+        }
+        
+        // Configurar eventos de validación
+        function setupValidationEvents() {
+            const validateBtn = document.getElementById('validateBtn');
+            if (validateBtn) {
+                validateBtn.addEventListener('click', handleAIValidation);
+            }
+        }
+        
+        // Manejar validación de contenido del estudiante
+        async function handleAIValidation() {
+            const input = document.getElementById('validationInput').value.trim();
+            const outputEl = document.getElementById('validationOutput');
+            const validateBtn = document.getElementById('validateBtn');
+            
+            if (!input) {
+                showToast('Error', 'Pega tu contenido para validar', 'error');
+                return;
+            }
+            
+            validateBtn.disabled = true;
+            validateBtn.innerHTML = '⏳ Analizando...';
+            
+            outputEl.className = 'ai-output loading show';
+            outputEl.innerHTML = '<div class="ai-loading-spinner" style="border-top-color: var(--accent-green);"></div>';
+            
+            try {
+                const section = COURSE_CONTENT[state.currentSection];
+                const prompt = `Actúa como un revisor experto de artículos científicos IEEE. 
+
+Analiza la siguiente ${section.title.toLowerCase()} y proporciona retroalimentación detallada sobre:
+1. Estructura y organización
+2. Claridad y precisión
+3. Cumplimiento de estándares IEEE
+4. Fortalezas identificadas
+5. Áreas de mejora específicas
+6. Sugerencias concretas para mejorar
+
+Contenido a evaluar:
+"""
+${input}
+"""
+
+Proporciona tu análisis en español de manera constructiva y educativa.`;
+
+                const result = await generateWithAI(prompt);
+                outputEl.className = 'ai-output show';
+                outputEl.innerHTML = `<div style="border-left: 3px solid var(--accent-green); padding-left: 1rem; margin-bottom: 1rem;"><strong style="color: var(--accent-green);">✓ Retroalimentación del Revisor IA</strong></div>${result.replace(/\n/g, '<br>')}`;
+                showToast('¡Análisis completado!', 'Revisa la retroalimentación de tu contenido', 'success');
+            } catch (error) {
+                outputEl.className = 'ai-output show';
+                outputEl.innerHTML = `<span style="color: var(--accent-red);">Error: ${error.message}</span>`;
+                showToast('Error', error.message, 'error');
+            } finally {
+                validateBtn.disabled = false;
+                validateBtn.innerHTML = '✓ Validar Mi Contenido';
+            }
+        }
+
+        function renderQuiz(quizData, sectionIndex) {
+            const currentQuestion = state.quizProgress[sectionIndex];
+            const isCompleted = state.sectionScores[sectionIndex] === 100;
+            if (isCompleted) {
+                return `<div class="quiz-container"><div class="quiz-completed"><div class="quiz-completed-icon">✓</div><h3>¡Sección Completada!</h3><p>Has respondido correctamente todas las preguntas</p><div class="quiz-score-display">100%</div></div></div>`;
+            }
+            const question = quizData[currentQuestion];
+            const progressDots = quizData.map((_, i) => `<div class="quiz-dot ${i < currentQuestion ? 'correct' : i === currentQuestion ? 'active' : ''}"></div>`).join('');
+            return `<div class="quiz-container"><div class="quiz-header"><div class="quiz-title">🧠 Evaluación</div><div class="quiz-progress"><span>Pregunta ${currentQuestion + 1} de ${quizData.length}</span><div class="quiz-progress-dots">${progressDots}</div></div></div><div class="quiz-question">${question.question}</div><div class="quiz-options">${question.options.map((option, i) => `<div class="quiz-option" data-index="${i}"><div class="quiz-option-letter">${String.fromCharCode(65 + i)}</div><div class="quiz-option-text">${option}</div></div>`).join('')}</div><div id="quizFeedback" class="quiz-feedback"></div></div>`;
+        }
+
+        function setupQuizEvents() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', handleQuizAnswer);
+            });
+        }
+
+        function handleQuizAnswer(e) {
+            const selectedOption = e.currentTarget;
+            const selectedIndex = parseInt(selectedOption.dataset.index);
+            const shuffledQuiz = prepareShuffledQuiz(state.currentSection);
+            const question = shuffledQuiz[state.quizProgress[state.currentSection]];
+            const feedbackEl = document.getElementById('quizFeedback');
+            document.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+            if (selectedIndex === question.correct) {
+                selectedOption.classList.add('correct');
+                feedbackEl.className = 'quiz-feedback correct show';
+                feedbackEl.innerHTML = `<strong>¡Correcto!</strong> ${question.explanation}`;
+                showToast('¡Correcto!', 'Respuesta acertada', 'success');
+                setTimeout(() => {
+                    state.quizProgress[state.currentSection]++;
+                    if (state.quizProgress[state.currentSection] >= shuffledQuiz.length) {
+                        state.sectionScores[state.currentSection] = 100;
+                        showToast('¡Felicidades!', 'Has completado esta sección', 'success');
+                    }
+                    // Usar renderQuizOnly para no perder la posición del scroll
+                    renderQuizOnly();
+                    renderSidebar();
+                    updateNavigationButtons();
+                }, 1500);
+            } else {
+                selectedOption.classList.add('incorrect');
+                document.querySelectorAll('.quiz-option')[question.correct].classList.add('correct');
+                feedbackEl.className = 'quiz-feedback incorrect show';
+                feedbackEl.innerHTML = `<strong>Incorrecto.</strong> ${question.explanation}`;
+                showToast('Incorrecto', 'Intenta de nuevo', 'error');
+                setTimeout(() => renderQuizOnly(), 2000);
+            }
+        }
+
+        async function handleAIGeneration() {
+            const input = document.getElementById('aiInput').value.trim();
+            const outputEl = document.getElementById('aiOutput');
+            const generateBtn = document.getElementById('generateBtn');
+            if (!input) {
+                showToast('Error', 'Ingresa un contexto para generar', 'error');
+                return;
+            }
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '⏳ Generando...';
+            outputEl.className = 'ai-output loading show';
+            outputEl.innerHTML = '<div class="ai-loading-spinner"></div>';
+            try {
+                const section = COURSE_CONTENT[state.currentSection];
+                const fullPrompt = section.aiPrompt + input;
+                const result = await generateWithAI(fullPrompt);
+                outputEl.className = 'ai-output show';
+                outputEl.textContent = result;
+                showToast('¡Generado!', 'Contenido generado exitosamente', 'success');
+            } catch (error) {
+                outputEl.className = 'ai-output show';
+                outputEl.innerHTML = `<span style="color: var(--accent-red);">Error: ${error.message}</span>`;
+                showToast('Error', error.message, 'error');
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '⚡ Generar Ejemplo';
+            }
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const navError = document.getElementById('navError');
+            prevBtn.disabled = state.currentSection === 0;
+            const isCompleted = state.sectionScores[state.currentSection] === 100;
+            if (isCompleted) {
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = state.currentSection === COURSE_CONTENT.length - 1 ? 'Finalizar →' : 'Siguiente →';
+                navError.classList.remove('show');
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.innerHTML = '🔒 Bloqueado';
+                navError.classList.add('show');
+            }
+        }
+
+        // FUNCIONES DE LOGIN
+        async function handleLogin() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            const model = document.getElementById('modelSelect').value;
+            const validateBtn = document.getElementById('validateApiBtn');
+            if (!apiKey) {
+                showStatus('Por favor ingresa una API Key', 'error');
+                return;
+            }
+            validateBtn.disabled = true;
+            showStatus('Validando API Key...', 'loading');
+            const isValid = await validateApiKey(apiKey, model);
+            if (isValid) {
+                state.apiKey = apiKey;
+                state.selectedModel = model;
+                state.isOffline = false;
+                showStatus('¡Validación exitosa!', 'success');
+                setTimeout(() => startApp(), 1000);
+            } else {
+                showStatus('API Key inválida. Verifica tu clave.', 'error');
+                validateBtn.disabled = false;
+            }
+        }
+
+        function handleOfflineMode() {
+            state.isOffline = true;
+            state.apiKey = '';
+            startApp();
+        }
+
+        function startApp() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('appScreen').classList.remove('hidden');
+            state.startTime = Date.now();
+            state.sectionStartTime = Date.now();
+            renderSidebar();
+            renderSection(true); // true = scroll to top al iniciar
+            updateNavigationButtons();
+            showToast('¡Bienvenido!', state.isOffline ? 'Modo educativo activado' : 'API conectada exitosamente', 'success');
+        }
+
+        // FUNCIONES DE PANTALLA FINAL
+        function showFinalScreen() {
+            document.getElementById('appScreen').classList.add('hidden');
+            document.getElementById('finalScreen').classList.remove('hidden');
+            const completedSections = state.sectionScores.filter(score => score === 100).length;
+            const totalScore = Math.round(state.sectionScores.reduce((a, b) => a + b, 0) / COURSE_CONTENT.length);
+            const timeSpent = Math.round((Date.now() - state.startTime) / 60000);
+            document.getElementById('finalScore').textContent = `${totalScore}%`;
+            document.getElementById('finalSections').textContent = `${completedSections}/${COURSE_CONTENT.length}`;
+            document.getElementById('finalTime').textContent = formatTime(timeSpent);
+        }
+
+        function generateResultCode() {
+            const name = document.getElementById('studentName').value.trim();
+            if (!name) {
+                showToast('Error', 'Ingresa tu nombre completo', 'error');
+                return;
+            }
+            const completedSections = state.sectionScores.filter(score => score === 100).length;
+            const totalScore = Math.round(state.sectionScores.reduce((a, b) => a + b, 0) / COURSE_CONTENT.length);
+            const data = {
+                student: name,
+                score: totalScore,
+                date: new Date().toISOString(),
+                sections: completedSections,
+                totalSections: COURSE_CONTENT.length,
+                details: state.sectionScores
+            };
+            const json = JSON.stringify(data);
+            const encoded = btoa(unescape(encodeURIComponent(json)));
+            document.getElementById('resultCode').value = encoded;
+            document.getElementById('resultBox').classList.add('show');
+            showToast('¡Código generado!', 'Comparte este código con tu docente', 'success');
+        }
+
+        // EVENT LISTENERS
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('validateApiBtn').addEventListener('click', handleLogin);
+            document.getElementById('offlineBtn').addEventListener('click', handleOfflineMode);
+            document.getElementById('toggleApiKey').addEventListener('click', (e) => {
+                const input = document.getElementById('apiKeyInput');
+                const btn = e.currentTarget;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    btn.textContent = '🙈';
+                } else {
+                    input.type = 'password';
+                    btn.textContent = '👁️';
+                }
+            });
+            document.getElementById('prevBtn').addEventListener('click', () => navigateToSection(state.currentSection - 1));
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                if (state.currentSection === COURSE_CONTENT.length - 1) showFinalScreen();
+                else navigateToSection(state.currentSection + 1);
+            });
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.add('open');
+                document.getElementById('mobileOverlay').classList.add('show');
+            });
+            document.getElementById('mobileOverlay').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('mobileOverlay').classList.remove('show');
+            });
+            document.getElementById('logoutBtn').addEventListener('click', () => location.reload());
+            document.getElementById('generateCodeBtn').addEventListener('click', generateResultCode);
+            document.getElementById('copyCodeBtn').addEventListener('click', () => {
+                const code = document.getElementById('resultCode');
+                code.select();
+                document.execCommand('copy');
+                showToast('¡Copiado!', 'Código copiado al portapapeles', 'success');
+            });
+        });
+    </script>
+</body>
+</html>
